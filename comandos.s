@@ -594,3 +594,33 @@ Disassembly of section .text:
 [u2110239@anjos 10.06]$ 
 
 */
+
+movl %r11d, %r11d
+movl %r11d, %r12d
+movl %r11d, %r13d
+movl %r11d, %r14d
+movl %r11d, %r15d 
+
+movl %r12d, %r11d
+movl %r12d, %r12d
+movl %r12d, %r13d
+movl %r12d, %r14d
+movl %r12d, %r15d
+
+movl %r13d, %r11d
+movl %r13d, %r12d
+movl %r13d, %r13d
+movl %r13d, %r14d
+movl %r13d, %r15d
+
+movl %r14d, %r11d
+movl %r14d, %r12d
+movl %r14d, %r13d
+movl %r14d, %r14d
+movl %r14d, %r15d
+
+movl %r15d, %r11d
+movl %r15d, %r12d
+movl %r15d, %r13d
+movl %r15d, %r14d
+movl %r15d, %r15d
