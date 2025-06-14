@@ -32,6 +32,7 @@ int Movl(unsigned char* codigo, char origem, int n_origem, int n_dest , int pos)
         codigo[pos++] = 0x41;
         unsigned char codigo_const[] = { 0xbb,0xbc,0xbd,0xbe,0xbf };
         codigo[pos++] = codigo_const[n_dest - 1]; //ex: se for mover uma constante p var1 (i.e. n_dest = 1), então pega o primeiro termo do array = array[0]
+        return pos;
     }
 
     unsigned char operacoes[6][5] = { // [linha][coluna] 
@@ -70,46 +71,81 @@ int Movl(unsigned char* codigo, char origem, int n_origem, int n_dest , int pos)
     return pos;
 }
 
-int Operacao(unsigned char* codigo, char op, int n_origem,int n_dest, int pos)
+int Operacao(unsigned char* codigo, char op, char origem, int n_origem,int n_dest, int pos)
 {
-    codigo[pos++] = 0x45;
-
-    unsigned char operacoes[5][5] = {
-            { 0xdb, 0xdc, 0xdd, 0xde, 0xdf }, //%r11d, %r1_d 
+    switch(origem){
+    case 'v':{
+        codigo[pos++] = 0x45; 
+        unsigned char operacoes[5][5] = {
+            { 0xdb, 0xdc, 0xdd, 0xde, 0xdf }, //%r11d, %r1_d (+ e -) //%r1_, %r11d (*)
             { 0xe3, 0xe4, 0xe5, 0xe6, 0xe7 },
             { 0xeb, 0xec, 0xed, 0xee, 0xef },
             { 0xf3, 0xf4, 0xf5, 0xf6, 0xf7 },
             { 0xfb, 0xfc, 0xfd, 0xfe, 0xff }
-    };
+        };
 
-    if (op == '+')
-        codigo[pos++] = 0x01;
-    else if (op == '-')
-        codigo[pos++] = 0x29;
-    else //op = '*'
-    {
-        codigo[pos++] = 0x0f;
-        codigo[pos++] = 0xaf;
+        if (op == '+')
+        {
+            codigo[pos++] = 0x01;
+            codigo[pos++] = operacoes[n_origem - 1][n_dest - 1];
+        }
+        else if (op == '-')
+        {
+            codigo[pos++] = 0x29;  
+            codigo[pos++] = operacoes[n_origem - 1][n_dest - 1]; 
+        }
+        else //op = '*'
+        {
+            codigo[pos++] = 0x0f;
+            codigo[pos++] = 0xaf;
+            codigo[pos++] = operacoes[n_dest - 1][n_origem - 1]; 
+        } 
+        break;
     }
-    codigo[pos++] = operacoes[n_origem - 1][n_dest - 1]; 
+    case '$':{
+        unsigned char operacoes[3][5] = {
+            { 0xc3, 0xc4, 0xc5, 0xc6, 0xc7 }, //addl $_, %r1_d 
+            { 0xeb, 0xec, 0xed, 0xee, 0xef }, //subl $_, %r1_d
+            { 0xdb, 0xe4, 0xed, 0xf6, 0xff }, //imul $_, %r1_d
+        };
+        if (op == '*')
+        {
+            codigo[pos++] = 0x45;
+            codigo[pos++] = 0x69;
+            codigo[pos++] = operacoes[2][n_dest - 1];
+        }
+        else
+        {
+            codigo[pos++] = 0x41;
+            codigo[pos++] = 0x81;  
+            if (op == '+')
+                codigo[pos++] = operacoes[0][n_dest - 1];   
+            else
+                codigo[pos++] = operacoes[1][n_dest - 1];  
+        }
+        pos = IntToChar(codigo, pos, n_origem);
+        break;
+    }
+    }
     return pos;
 }
 
 int main(void) {
     int line = 1;
     int  c;
-    FILE* myfp = fopen("ret.txt", "r"); 
-    unsigned char codigo[156]; //arq tem no máximo 30 linha (i.e, 30 comandos) q tem no máximo 5 bytes -> 150bytes. Mas tem ainda os comandos p alocar o RA e terminar (pushq + movq + leave + ret) -> 150 + 6 
+    FILE* myfp = fopen("op_aritm.txt", "r"); 
+    unsigned char codigo[1100];
 
     if (myfp == NULL) {
         perror("nao conseguiu abrir arquivo!"); 
         exit(1); 
     }
     unsigned char reg[] = { 0x5c, 0x64, 0x6c, 0x74, 0x7c };
-    unsigned char localizacao[] = { 0xf8, 0xf0, 0xe8, 0xe0, 0xd8 }; //8, 16, 24, 32, 40
+    unsigned char localizacao[] = { 0xf8, 0xf0, 0xe8, 0xe0, 0xd8 }; //-8(%rsp), -16, -24, -32, -40
     int pos = 0; 
+
     // Montando o RA 
-   
+
     //pushq:
     codigo[pos++] = 0x55;
 
@@ -120,9 +156,10 @@ int main(void) {
     codigo[pos++] = 0x48; codigo[pos++] = 0x83; codigo[pos++] = 0xec; codigo[pos++] = 0x30;
 
     //movq %r1_, -x(%rsp)
-    codigo[pos++] = 0x4c; codigo[pos++] = 0x89;
     for (int i = 0; i < 5; i++)
     {
+        codigo[pos++] = 0x4c;
+        codigo[pos++] = 0x89;
         codigo[pos++] = reg[i];
         codigo[pos++] = 0x24;
         codigo[pos++] = localizacao[i]; 
@@ -144,9 +181,9 @@ int main(void) {
             }
             else //retorna uma variável
             {
-                codigo[pos++] = 41;
-                codigo[pos++] = 89;
-                unsigned char ret[] = { 0xc3,0xc4,0xc5,0xc6,0xc7 };
+                codigo[pos++] = 0x44;
+                codigo[pos++] = 0x89;
+                unsigned char ret[] = { 0xd8,0xe0,0xe8,0xd0,0xf8 };
                 codigo[pos++] = ret[idx0 - 1];
             }
             break;
@@ -178,8 +215,10 @@ int main(void) {
                 printf("%d %c%d = %c%d %c %c%d\n",
                     line, var0, idx0, var1, idx1, op, var2, idx2);
 
-                pos = Movl(codigo, var2, idx2, idx1, pos); //move o valor depois de op para a variável de destino
-                pos = Operacao(codigo, op, idx2, idx0, pos); //operação entre a variável de destino e a que vem antes de op
+                pos = Movl(codigo, var1, idx1, idx0, pos); //move o valor antes de op para a variável de destino
+                if (var1 == '$')
+                    pos = IntToChar(codigo, pos, idx1);
+                pos = Operacao(codigo, op, var2, idx2, idx0, pos); //operação entre a variável de destino e a que vem depois de op
 
             }
             break;
@@ -200,9 +239,10 @@ int main(void) {
     }
 
     //movq -x(%rsp), %r1_
-    codigo[pos++] = 0x4c; codigo[pos++] = 0x8b;
     for (int i = 0; i < 5; i++)
     {
+        codigo[pos++] = 0x4c;
+        codigo[pos++] = 0x8b;
         codigo[pos++] = reg[i];
         codigo[pos++] = 0x24;
         codigo[pos++] = localizacao[i]; 
@@ -211,11 +251,17 @@ int main(void) {
     codigo[pos++] = 0xc9; //leave
     codigo[pos] = 0xc3; //ret 
 
+    printf("Código gerado (hex):\n");
+    for (int i = 0; i <= pos; i++) {
+        printf("%02x ", codigo[i]);
+    }
+
     fclose(myfp);
     typedef int (*funcp) (); 
     funcp funcaoSBas = (funcp)codigo;  
     int resposta = (*funcaoSBas)();
-    Compara(resposta, 100);
+    printf("\nresposta gerada: %d", resposta);
+    Compara(resposta, -4);
 
     return 0;
 }
