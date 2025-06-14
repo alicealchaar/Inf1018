@@ -98,7 +98,7 @@ int Operacao(unsigned char* codigo, char op, int n_origem,int n_dest, int pos)
 int main(void) {
     int line = 1;
     int  c;
-    FILE* myfp = fopen("programa.txt", "r"); 
+    FILE* myfp = fopen("ret.txt", "r"); 
     unsigned char codigo[156]; //arq tem no máximo 30 linha (i.e, 30 comandos) q tem no máximo 5 bytes -> 150bytes. Mas tem ainda os comandos p alocar o RA e terminar (pushq + movq + leave + ret) -> 150 + 6 
 
     if (myfp == NULL) {
