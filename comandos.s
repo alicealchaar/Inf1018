@@ -203,7 +203,7 @@ movl %eax, %r11d
 movl %eax, %r12d
 movl %eax, %r13d
 movl %eax, %r14d
-movl %eax, %r15d */
+movl %eax, %r15d 
 
 pushq %rbp
 movq %rsp, %rbp
@@ -219,8 +219,10 @@ movq -8(%rsp), %r12
 movq -8(%rsp), %r13
 movq -8(%rsp), %r14
 movq -8(%rsp), %r15
+*/
 
 /*
+
 comandos.o:     file format elf64-x86-64
 
 
@@ -593,4 +595,212 @@ Disassembly of section .text:
    4:	48 83 ec 20          	sub    $0x20,%rsp
 [u2110239@anjos 10.06]$ 
 
+*/ 
+
+/*
+movl %r11d, %r11d
+movl %r11d, %r12d
+movl %r11d, %r13d
+movl %r11d, %r14d
+movl %r11d, %r15d 
+
+movl %r12d, %r11d
+movl %r12d, %r12d
+movl %r12d, %r13d
+movl %r12d, %r14d
+movl %r12d, %r15d
+
+movl %r13d, %r11d
+movl %r13d, %r12d
+movl %r13d, %r13d
+movl %r13d, %r14d
+movl %r13d, %r15d
+
+movl %r14d, %r11d
+movl %r14d, %r12d
+movl %r14d, %r13d
+movl %r14d, %r14d
+movl %r14d, %r15d
+
+movl %r15d, %r11d
+movl %r15d, %r12d
+movl %r15d, %r13d
+movl %r15d, %r14d
+movl %r15d, %r15d
+
+/*Variaveis*/
+   0:   45 89 db                mov    %r11d,%r11d
+   3:   45 89 dc                mov    %r11d,%r12d
+   6:   45 89 dd                mov    %r11d,%r13d
+   9:   45 89 de                mov    %r11d,%r14d
+   c:   45 89 df                mov    %r11d,%r15d
+
+   f:   45 89 e3                mov    %r12d,%r11d
+  12:   45 89 e4                mov    %r12d,%r12d
+  15:   45 89 e5                mov    %r12d,%r13d
+  18:   45 89 e6                mov    %r12d,%r14d
+  1b:   45 89 e7                mov    %r12d,%r15d
+
+  1e:   45 89 eb                mov    %r13d,%r11d
+  21:   45 89 ec                mov    %r13d,%r12d
+  24:   45 89 ed                mov    %r13d,%r13d
+  27:   45 89 ee                mov    %r13d,%r14d
+  2a:   45 89 ef                mov    %r13d,%r15d
+
+  2d:   45 89 f3                mov    %r14d,%r11d
+  30:   45 89 f4                mov    %r14d,%r12d
+  33:   45 89 f5                mov    %r14d,%r13d
+  36:   45 89 f6                mov    %r14d,%r14d
+  39:   45 89 f7                mov    %r14d,%r15d
+
+  3c:   45 89 fb                mov    %r15d,%r11d
+  3f:   45 89 fc                mov    %r15d,%r12d
+  42:   45 89 fd                mov    %r15d,%r13d
+  45:   45 89 fe                mov    %r15d,%r14d
+  48:   45 89 ff                mov    %r15d,%r15d
+  
+  /*Parametro*/
+   0:	41 89 fb             	mov    %edi,%r11d
+   3:	41 89 fc             	mov    %edi,%r12d
+   6:	41 89 fd             	mov    %edi,%r13d
+   9:	41 89 fe             	mov    %edi,%r14d
+   c:	41 89 ff             	mov    %edi,%r15d
+
+   f:	41 89 f3             	mov    %esi,%r11d
+  12:	41 89 f4             	mov    %esi,%r12d
+  15:	41 89 f5             	mov    %esi,%r13d
+  18:	41 89 f6             	mov    %esi,%r14d
+  1b:	41 89 f7             	mov    %esi,%r15d
+
+  1e:	41 89 d3             	mov    %edx,%r11d
+  21:	41 89 d4             	mov    %edx,%r12d
+  24:	41 89 d5             	mov    %edx,%r13d
+  27:	41 89 d6             	mov    %edx,%r14d
+  2a:	41 89 d7             	mov    %edx,%r15d
+
+/*constante*/
+   0:	41 bb 01 00 00 00    	mov    $0x1,%r11d
+   6:	41 bc 01 00 00 00    	mov    $0x1,%r12d
+   c:	41 bd 01 00 00 00    	mov    $0x1,%r13d
+  12:	41 be 01 00 00 00    	mov    $0x1,%r14d
+  18:	41 bf 01 00 00 00    	mov    $0x1,%r15d
+
 */
+/*
+add    %r11d,%r11d
+add    %r12d,%r11d
+add    %r13d,%r11d
+add    %r14d,%r11d
+add    %r15d,%r11d
+add    $1,%r11d
+
+comandos.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <.text>:
+   0:   45 01 db                add    %r11d,%r11d
+   3:   45 01 e3                add    %r12d,%r11d
+   6:   45 01 eb                add    %r13d,%r11d
+   9:   45 01 f3                add    %r14d,%r11d
+   c:   45 01 fb                add    %r15d,%r11d
+   f:   41 83 c3 01             add    $0x1,%r11d
+
+   */
+
+addl    $1,%r11d
+addl    $1,%r12d
+addl    $1,%r13d
+addl    $1,%r14d
+addl    $1,%r15d
+
+subl    $1,%r11d
+subl    $1,%r12d
+subl    $1,%r13d
+subl    $1,%r14d
+subl    $1,%r15d
+
+imul    $1,%r11d
+imul    $1,%r12d
+imul    $1,%r13d
+imul    $1,%r14d
+imul    $1,%r15d
+
+   0:   41 83 c3 01             add    $0x1,%r11d
+   4:   41 83 c4 01             add    $0x1,%r12d
+   8:   41 83 c5 01             add    $0x1,%r13d
+   c:   41 83 c6 01             add    $0x1,%r14d
+  10:   41 83 c7 01             add    $0x1,%r15d
+  14:   41 83 eb 01             sub    $0x1,%r11d
+  18:   41 83 ec 01             sub    $0x1,%r12d
+  1c:   41 83 ed 01             sub    $0x1,%r13d
+  20:   41 83 ee 01             sub    $0x1,%r14d
+  24:   41 83 ef 01             sub    $0x1,%r15d
+  28:   45 6b db 01             imul   $0x1,%r11d,%r11d
+  2c:   45 6b e4 01             imul   $0x1,%r12d,%r12d
+  30:   45 6b ed 01             imul   $0x1,%r13d,%r13d
+  34:   45 6b f6 01             imul   $0x1,%r14d,%r14d
+  38:   45 6b ff 01             imul   $0x1,%r15d,%r15d
+
+  imul   %r11d,%r11d
+  imul   %r12d,%r11d
+  imul   %r13d,%r11d
+  imul   %r14d,%r11d
+  imul   %r15d,%r11d
+
+  imul   %r11d,%r12d
+  imul   %r12d,%r12d
+  imul   %r13d,%r12d
+  imul   %r14d,%r12d
+  imul   %r15d,%r12d
+
+  imul   %r11d,%r13d
+  imul   %r12d,%r13d
+  imul   %r13d,%r13d
+  imul   %r14d,%r13d
+  imul   %r15d,%r13d
+
+  imul   %r11d,%r14d
+  imul   %r12d,%r14d
+  imul   %r13d,%r14d
+  imul   %r14d,%r14d
+  imul   %r15d,%r14d
+
+  imul   %r11d,%r15d
+  imul   %r12d,%r15d
+  imul   %r13d,%r15d
+  imul   %r14d,%r15d
+  imul   %r15d,%r15d
+
+  Disassembly of section .text:
+
+0000000000000000 <.text>:
+   0:   45 0f af db             imul   %r11d,%r11d
+   4:   45 0f af dc             imul   %r12d,%r11d
+   8:   45 0f af dd             imul   %r13d,%r11d
+   c:   45 0f af de             imul   %r14d,%r11d
+  10:   45 0f af df             imul   %r15d,%r11d
+  14:   45 0f af e3             imul   %r11d,%r12d
+  18:   45 0f af e4             imul   %r12d,%r12d
+  1c:   45 0f af e5             imul   %r13d,%r12d
+  20:   45 0f af e6             imul   %r14d,%r12d
+  24:   45 0f af e7             imul   %r15d,%r12d
+  28:   45 0f af eb             imul   %r11d,%r13d
+  2c:   45 0f af ec             imul   %r12d,%r13d
+  30:   45 0f af ed             imul   %r13d,%r13d
+  34:   45 0f af ee             imul   %r14d,%r13d
+  38:   45 0f af ef             imul   %r15d,%r13d
+  3c:   45 0f af f3             imul   %r11d,%r14d
+  40:   45 0f af f4             imul   %r12d,%r14d
+  44:   45 0f af f5             imul   %r13d,%r14d
+  48:   45 0f af f6             imul   %r14d,%r14d
+  4c:   45 0f af f7             imul   %r15d,%r14d
+  50:   45 0f af fb             imul   %r11d,%r15d
+  54:   45 0f af fc             imul   %r12d,%r15d
+  58:   45 0f af fd             imul   %r13d,%r15d
+  5c:   45 0f af fe             imul   %r14d,%r15d
+  60:   45 0f af ff             imul   %r15d,%r15d
+  
+
+  
